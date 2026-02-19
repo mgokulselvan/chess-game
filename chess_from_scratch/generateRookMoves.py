@@ -1,4 +1,5 @@
 from Helper import *
+from Notations import *
 
 def generateRookMoves(board,rowNo,columnNo,turn):
     moves = []
@@ -7,7 +8,7 @@ def generateRookMoves(board,rowNo,columnNo,turn):
         if board[hcoord][columnNo]!='.':#if the box is NOT empty
             if not is_enemy(board[hcoord][columnNo],turn):#if it is not enemy piece, that move is not valid and hence break
                 break
-        moves.append(Notation([(rowNo,columnNo),(hcoord,columnNo)])#adding the move
+        moves.append(Notation([(rowNo,columnNo),(hcoord,columnNo)]))#adding the move
         if board[hcoord][columnNo]!='.' and is_enemy(board[hcoord][columnNo],turn):#if the destination of the added move was an enemy piece, the rook can't move any further, and hence thats the furthest end in that direction
             break
 
@@ -16,7 +17,7 @@ def generateRookMoves(board,rowNo,columnNo,turn):
         if board[hcoord][columnNo]!='.':
             if not is_enemy(board[hcoord][columnNo],turn):
                 break
-        moves.append(Notation([(rowNo,columnNo),(hcoord,columnNo)])
+        moves.append(Notation([(rowNo,columnNo),(hcoord,columnNo)]))
         if board[hcoord][columnNo]!='.' and is_enemy(board[hcoord][columnNo],turn):
             break
 
@@ -25,7 +26,7 @@ def generateRookMoves(board,rowNo,columnNo,turn):
         if board[rowNo][vcoord]!='.':
             if not is_enemy(board[rowNo][vcoord],turn):
                 break
-        moves.append(Notation([(rowNo,columnNo),(rowNo,vcoord)])
+        moves.append(Notation([(rowNo,columnNo),(rowNo,vcoord)]))
         if board[rowNo][vcoord]!='.' and is_enemy(board[rowNo][vcoord],turn):
             break
 
@@ -34,8 +35,9 @@ def generateRookMoves(board,rowNo,columnNo,turn):
         if board[rowNo][vcoord]!='.':
             if not is_enemy(board[rowNo][vcoord],turn):
                 break
-        moves.append(Notation([(rowNo,columnNo),(rowNo,vcoord)])
+        moves.append(Notation([(rowNo,columnNo),(rowNo,vcoord)]))
         if board[rowNo][vcoord]!=' ' and is_enemy(board[rowNo][vcoord],turn):
             break
 
-    return moves
+    return moves 
+
