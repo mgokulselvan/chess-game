@@ -36,7 +36,7 @@ def generateRookMoves(board,rowNo,columnNo,turn):
             if not is_enemy(board[rowNo][vcoord],turn):
                 break
         moves.append(Notation([(rowNo,columnNo),(rowNo,vcoord)]))
-        if board[rowNo][vcoord]!=' ' and is_enemy(board[rowNo][vcoord],turn):
+        if board[rowNo][vcoord]!='.' and is_enemy(board[rowNo][vcoord],turn):
             break
 
     return moves 

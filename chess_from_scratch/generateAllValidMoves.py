@@ -1,6 +1,12 @@
 from Helper import *
+from generateKingMoves import *
+from generateQueenMoves import *
+from generateBishopMoves import *
+from generateKnightMoves import *
+from generateRookMoves import *
+from generatePawnMoves import *
 
-def generateAllValidMoves(board,turn):
+def generateAllValidMoves(board,turn,history):
 
     #List to gather all the moves based on the current state of the game
     moves=[]
@@ -10,25 +16,25 @@ def generateAllValidMoves(board,turn):
             
             #calculating the moves only for the current player
             if board[rowNo][columnNo].isupper():
-               if turn!=Turn.WHITE:
+               if turn!=TURN.WHITE:
                 continue
             else:
-               if turn!=Turn.BLACK:
+               if turn!=TURN.BLACK:
                 continue
 
             match(board[rowNo][columnNo].lower()):
                 case 'p':#calculating moves for a pawn
-                    moves.append(generatePawnMoves(board,rowNo,columnNo,turn))
+                    moves.extend(generatePawnMoves(board,rowNo,columnNo,turn,history))
                 case 'r':#calculating moves for a rook
-                    moves.append(generateRookMoves(board,rowNo,columnNo,turn))
+                    moves.extend(generateRookMoves(board,rowNo,columnNo,turn))
                 case 'n':#calculating moves for a knight
-                    moves.append(generateKnightMoves(board,rowNo,columnNo,turn))
+                    moves.extend(generateKnightMoves(board,rowNo,columnNo,turn))
                 case 'b':#calculating moves for a bishop
-                    moves.append(generateBishopMoves(board,rowNo,columnNo,turn))
+                    moves.extend(generateBishopMoves(board,rowNo,columnNo,turn))
                 case 'q':#calculating moves for a queen
-                    moves.append(generateQueenMoves(board,rowNo,columnNo,turn))
+                    moves.extend(generateQueenMoves(board,rowNo,columnNo,turn))
                 case 'k':#calculating moves for a king
-                    moves.append(generateKingMoves(board,rowNo,columnNo,turn))
+                    moves.extend(generateKingMoves(board,rowNo,columnNo,turn))
 
     return moves
 

@@ -34,7 +34,7 @@ def generateBishopMoves(board,rowNo,columnNo,turn):
     #CHECKING - ALL SQUARES FROM THE CURRENT BISHOP POSITION TO THE BOTTOM LEFT OF THE BOARD
     rcoord=rowNo+1
     vcoord=columnNo-1
-    while rcoord> 8 and vcoord < -1:
+    while rcoord< 8 and vcoord > -1:
         if board[rcoord][vcoord]!='.':
             if not is_enemy(board[rcoord][vcoord],turn):
                 break
@@ -48,7 +48,7 @@ def generateBishopMoves(board,rowNo,columnNo,turn):
     #CHECKING - ALL SQUARES FROM THE CURRENT BISHOP POSITION TO THE BOTTOM RIGHT OF THE BOARD
     rcoord=rowNo+1
     vcoord=columnNo+1
-    while rcoord> 8 and vcoord < 8:
+    while rcoord< 8 and vcoord < 8:
         if board[rcoord][vcoord]!='.':
             if not is_enemy(board[rcoord][vcoord],turn):
                 break
