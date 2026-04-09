@@ -6,6 +6,7 @@ def makeMove(board, move):
     (srcRow,srcColumn)=Move[0]
     (destRow,destColumn)=Move[1]
     newBoard=copy.deepcopy(board)
+    #CASTLING
     #WHITE KING SIDE
     if srcRow==7 and srcColumn==4 and destRow==7 and destColumn==6 and board[srcRow][srcColumn]=='K':
         newBoard[destRow][destColumn] = board[srcRow][srcColumn]
@@ -30,6 +31,30 @@ def makeMove(board, move):
         newBoard[srcRow][srcColumn] = '.'
         newBoard[0][0] = '.'
         newBoard[0][3] = 'r'
+
+    #EN-PASSANT
+    elif board[srcRow][srcColumn]=='p' and destRow==srcRow+1 and destColumn==srcColumn+1 and board[destRow][destColumn]=='.':
+        newBoard[destRow][destColumn]=board[srcRow][srcColumn]
+        newBoard[srcRow][srcColumn]='.'
+        newBoard[srcRow][srcColumn+1]='.'
+
+    elif board[srcRow][srcColumn]=='p' and destRow==srcRow+1 and destColumn==srcColumn-1 and board[destRow][destColumn]=='.':
+        newBoard[destRow][destColumn]=board[srcRow][srcColumn]
+        newBoard[srcRow][srcColumn]='.'
+        newBoard[srcRow][srcColumn-1]='.'
+
+    elif board[srcRow][srcColumn]=='P' and destRow==srcRow-1 and destColumn==srcColumn+1 and board[destRow][destColumn]=='.':
+        newBoard[destRow][destColumn]=board[srcRow][srcColumn]
+        newBoard[srcRow][srcColumn]='.'
+        newBoard[srcRow][srcColumn+1]='.'
+
+
+    elif board[srcRow][srcColumn]=='P' and destRow==srcRow-1 and destColumn==srcColumn-1 and board[destRow][destColumn]=='.':
+        newBoard[destRow][destColumn]=board[srcRow][srcColumn]
+        newBoard[srcRow][srcColumn]='.'
+        newBoard[srcRow][srcColumn-1]='.'
+
+
     else:
         newBoard[destRow][destColumn] = board[srcRow][srcColumn]
         newBoard[srcRow][srcColumn] = '.'
