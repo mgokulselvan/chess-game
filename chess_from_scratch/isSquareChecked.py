@@ -5,11 +5,10 @@ from generateBishopMoves import *
 from generateKnightMoves import *
 from generateRookMoves import *
 from generatePawnMoves import *
-from generateCastlingMoves import *
+from makeMove import *
 
-def generateAllPseudoMoves(board,turn,history,castlingRights):
-
-    #List to gather all the moves based on the current state of the game
+#def generateAllPseudoMoves(board,turn,history,castlingRights):
+def generateMoves(board,turn,history):
     moves=[]
 
     for rowNo in range(8):
@@ -36,9 +35,19 @@ def generateAllPseudoMoves(board,turn,history,castlingRights):
                     moves.extend(generateQueenMoves(board,rowNo,columnNo,turn))
                 case 'k':#calculating moves for a king
                     moves.extend(generateKingMoves(board,rowNo,columnNo,turn))
-    
-    moves.extend(generateCastlingMoves(board,turn,castlingRights,history)) 
-
     return moves
 
+def isSquareChecked(board,col,row,turn,history):
+    if turn ==TURN.WHITE:
+        tempTurn = TURN.BLACK
+    else:
+        tempTurn = TURN.WHITE
 
+    tempMoves = generateMoves(board,tempTurn,history)
+    #CHECK IF THE DESTINATION IS A KING OF ENEMY KIND, IF SO RETURN TRUE AT THE END RETURN FALSE
+    for move in tempMoves:
+        Move = moves(move)
+        (rowNo,columnNo) = Move[1] 
+        if rowNo==row and columnNo==col:
+            return True
+    return False 

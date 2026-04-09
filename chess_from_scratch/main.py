@@ -4,6 +4,7 @@ from makeMove import *
 from printBoard import *
 from generateAllLegalMoves import *
 from isValidNotation import *
+from Notations import *
 
 StartingBoard = [
         ['r' , 'n' , 'b' , 'q' , 'k' , 'b' , 'n' , 'r'],#0 #8
@@ -21,10 +22,16 @@ StartingBoard = [
 gameBoard = copy.deepcopy(StartingBoard)
 movesHistory = []
 currentTurn = TURN.WHITE
+castlingRights = {
+    "white-kingside":True,
+    "white-queenside":True,
+    "black-kingside":True,
+    "black-queenside":True
+}
 
 while(True):
 
-    legalMoves = generateAllLegalMoves(gameBoard , currentTurn , movesHistory)
+    legalMoves = generateAllLegalMoves(gameBoard , currentTurn , movesHistory,castlingRights)
     if len(legalMoves) == 0:
         if currentTurn == TURN.WHITE:
             print("Black checkmates White, Black wins")
@@ -54,7 +61,38 @@ while(True):
         print("Not a Legal Move, please enter a legal move")
         continue
     else:
-        gameBoard = makeMove(gameBoard , move)
-        currentTurn = TURN.BLACK if currentTurn == TURN.WHITE else TURN.WHITE
-        movesHistory.append(move)
 
+        #Check if Castling done
+        currentMoveCoords=moves(move)
+
+        if(currentMoveCoords[1]==(0,0)):castlingRights["black-queenside"]=False;
+        if(currentMoveCoords[1]==(0,7)):castlingRights["black-kingside"]=False;
+        if(currentMoveCoords[1]==(7,0)):castlingRights["white-queenside"]=False;
+        if(currentMoveCoords[1]==(7,7)):castlingRights["white-kingside"]=False;
+
+        if(currentTurn==TURN.BLACK):
+
+            if currentMoveCoords[0]==(0,4):#if source is king
+                castlingRights["black-kingside"]=False;
+                castlingRights["black-queenside"]=False;
+            elif currentMoveCoords[0]==(0,7):#source is black rook(king side)
+                castlingRights["black-kingside"]=False;
+            elif currentMoveCoords[0]==(0,0):#source is black rook(queenside side)
+                castlingRights["black-queenside"]=False;
+
+            currentTurn=TURN.WHITE
+        else:
+
+            if currentMoveCoords[0]==(7,4):#if source is king
+                castlingRights["white-kingside"]=False;
+                castlingRights["white-queenside"]=False;
+            elif currentMoveCoords[0]==(7,7):#source is black rook(king side)
+                castlingRights["white-kingside"]=False;
+            elif currentMoveCoords[0]==(7,0):#source is black rook(queenside side)
+                castlingRights["white-queenside"]=False;
+
+            currentTurn=TURN.BLACK
+
+        gameBoard = makeMove(gameBoard , move)
+
+        movesHistory.append(move)

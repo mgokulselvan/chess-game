@@ -2,7 +2,7 @@ from Notations import *
 from Helper import *
 from makeMove import *
 
-def resultsInCheck(board,turn,move,history):
+def resultsInCheck(board,turn,move,history,castlingRights):
     from generateAllPseudoMoves import generateAllPseudoMoves
 
     tempBoard = makeMove(board , move)
@@ -11,7 +11,7 @@ def resultsInCheck(board,turn,move,history):
         tempTurn = TURN.BLACK
     else:
         tempTurn = TURN.WHITE
-    tempMoves = generateAllPseudoMoves(tempBoard,tempTurn,tempHistory)
+    tempMoves = generateAllPseudoMoves(tempBoard,tempTurn,tempHistory,castlingRights)
     #CHECK IF THE DESTINATION IS A KING OF ENEMY KIND, IF SO RETURN TRUE AT THE END RETURN FALSE
     for move in tempMoves:
         Move = moves(move)
