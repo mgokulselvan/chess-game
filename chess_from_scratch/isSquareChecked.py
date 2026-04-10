@@ -44,7 +44,6 @@ def isSquareChecked(board,col,row,turn,history):
         tempTurn = TURN.WHITE
 
     tempMoves = generateMoves(board,tempTurn,history)
-    #CHECK IF THE DESTINATION IS A KING OF ENEMY KIND, IF SO RETURN TRUE AT THE END RETURN FALSE
     for move in tempMoves:
         Move = moves(move)
         (rowNo,columnNo) = Move[1] 
