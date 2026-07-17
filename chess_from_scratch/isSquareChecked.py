@@ -5,9 +5,8 @@ from generateBishopMoves import *
 from generateKnightMoves import *
 from generateRookMoves import *
 from generatePawnMoves import *
-from makeMove import *
+import copy
 
-#def generateAllPseudoMoves(board,turn,history,castlingRights):
 def generateMoves(board,turn,history):
     moves=[]
 
@@ -38,15 +37,39 @@ def generateMoves(board,turn,history):
     return moves
 
 def isSquareChecked(board,col,row,turn,history):
+    #gotta copy the board cuz the moves generated become wrong otherwise,cuz its basically a simulation of what will happen if that move is made,and then checking if it will be checked
+    tempBoard = copy.deepcopy(board)
+    king = 'K' if turn == TURN.WHITE else 'k'
+
+    for kingRow in range(8):
+        for kingCol in range(8):
+            if tempBoard[kingRow][kingCol] == king:
+                tempBoard[kingRow][kingCol] = '.'
+                tempBoard[row][col] = king
+                break
+        else:
+            continue
+        break
+
     if turn ==TURN.WHITE:
         tempTurn = TURN.BLACK
     else:
         tempTurn = TURN.WHITE
 
-    tempMoves = generateMoves(board,tempTurn,history)
+    tempMoves = generateMoves(tempBoard,tempTurn,history)
     for move in tempMoves:
         Move = moves(move)
         (rowNo,columnNo) = Move[1] 
         if rowNo==row and columnNo==col:
             return True
     return False 
+
+def isKingInCheck(board, turn, history):
+    king = 'K' if turn == TURN.WHITE else 'k'
+
+    for row in range(8):
+        for col in range(8):
+            if board[row][col] == king:
+                return isSquareChecked(board, col, row, turn, history)
+
+    raise ValueError(f"No {turn.value} king found on the board")

@@ -5,6 +5,7 @@ from printBoard import *
 from generateAllLegalMoves import *
 from isValidNotation import *
 from Notations import *
+from isSquareChecked import isKingInCheck
 
 StartingBoard = [
         ['r' , 'n' , 'b' , 'q' , 'k' , 'b' , 'n' , 'r'],#0 #8
@@ -18,16 +19,17 @@ StartingBoard = [
     ]    #0     1     2     3     4     5     6     7
          #a     b     c     d     e     f     g     h
 
-
-gameBoard = copy.deepcopy(StartingBoard)
-movesHistory = []
-currentTurn = TURN.WHITE
-castlingRights = {
+StartingCastlingRights = {
     "white-kingside":True,
     "white-queenside":True,
     "black-kingside":True,
     "black-queenside":True
 }
+
+gameBoard = copy.deepcopy(StartingBoard)
+movesHistory = []
+currentTurn = TURN.WHITE
+castlingRights = copy.deepcopy(StartingCastlingRights)
 
 instructions="""
 CHESS CLI - INSTRUCTIONS
@@ -51,16 +53,21 @@ try:
 
         legalMoves = generateAllLegalMoves(gameBoard , currentTurn , movesHistory,castlingRights)
         if len(legalMoves) == 0:
-            if currentTurn == TURN.WHITE:
-                print("Black checkmates White, Black wins")
-            elif currentTurn == TURN.BLACK:
-                print("White checkmates Black, White wins")
+            if isKingInCheck(gameBoard, currentTurn, movesHistory):
+                if currentTurn == TURN.WHITE:
+                    print("Black checkmates White, Black wins")
+                elif currentTurn == TURN.BLACK:
+                    print("White checkmates Black, White wins")
+            else:
+                print("Stalemate, the game is a draw")
 
             restartFlag = input("Do you want to restart the game?(Y/N)")
             if restartFlag.lower() == 'y':
                 movesHistory = []
                 gameBoard = copy.deepcopy(StartingBoard)
                 currentTurn = TURN.WHITE
+                castlingRights = copy.deepcopy(StartingCastlingRights)
+                continue
             elif restartFlag.lower() == 'n':
                 break
 
