@@ -1,10 +1,10 @@
 from Helper import *
-from generateKingMoves import *
-from generateQueenMoves import *
-from generateBishopMoves import *
-from generateKnightMoves import *
-from generateRookMoves import *
-from generatePawnMoves import *
+from moves.generateKingMoves import *
+from moves.generateQueenMoves import *
+from moves.generateBishopMoves import *
+from moves.generateKnightMoves import *
+from moves.generateRookMoves import *
+from moves.generatePawnMoves import *
 import copy
 
 def generateMoves(board,turn,history):

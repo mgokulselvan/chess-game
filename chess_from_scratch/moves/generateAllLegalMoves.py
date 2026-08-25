@@ -1,4 +1,4 @@
-from generateAllPseudoMoves import *
+from moves.generateAllPseudoMoves import *
 from resultsInCheck import *
 
 def generateAllLegalMoves(board,turn,history,castlingRights):

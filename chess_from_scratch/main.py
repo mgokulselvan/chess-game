@@ -2,7 +2,7 @@ from Helper import *
 import copy
 from makeMove import *
 from printBoard import *
-from generateAllLegalMoves import *
+from moves.generateAllLegalMoves import *
 from isValidNotation import *
 from Notations import *
 from isSquareChecked import isKingInCheck

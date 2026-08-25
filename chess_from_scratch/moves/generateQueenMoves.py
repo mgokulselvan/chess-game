@@ -1,6 +1,6 @@
 from Helper import *
-from generateRookMoves import *
-from generateBishopMoves import *
+from moves.generateRookMoves import *
+from moves.generateBishopMoves import *
 
 def generateQueenMoves(board,rowNo,columnNo,turn):
     moves = []

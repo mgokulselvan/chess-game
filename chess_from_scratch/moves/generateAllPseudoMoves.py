@@ -1,11 +1,11 @@
 from Helper import *
-from generateKingMoves import *
-from generateQueenMoves import *
-from generateBishopMoves import *
-from generateKnightMoves import *
-from generateRookMoves import *
-from generatePawnMoves import *
-from generateCastlingMoves import *
+from moves.generateKingMoves import *
+from moves.generateQueenMoves import *
+from moves.generateBishopMoves import *
+from moves.generateKnightMoves import *
+from moves.generateRookMoves import *
+from moves.generatePawnMoves import *
+from moves.generateCastlingMoves import *
 
 def generateAllPseudoMoves(board,turn,history,castlingRights):
 
