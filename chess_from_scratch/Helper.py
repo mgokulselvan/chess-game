@@ -1,5 +1,7 @@
 from enum import Enum
 from Notations import *
+from resultsInCheck import *
+from makeMove import *
 
 #CUSTOM ERROR
 class InvalidMoveError(Exception):
@@ -45,14 +47,26 @@ def getEnPassantTarget(board, movesHistory):
 
         if piece == 'P':
             if destCol -1 >=0 and board[destRow][destCol - 1] == 'p':
-                return (targetRow, targetCol)
+                enemyTurn = TURN.BLACK 
+                candidateMove = Notation([(destRow,destCol-1),(targetRow,targetCol)])
+                if not resultsInCheck(board,enemyTurn,candidateMove,movesHistory):
+                    return (targetRow, targetCol)
             if destCol +1 <8 and board[destRow][destCol + 1] == 'p':
-                return (targetRow, targetCol)
+                enemyTurn = TURN.BLACK 
+                candidateMove = Notation([(destRow,destCol+1),(targetRow,targetCol)])
+                if not resultsInCheck(board,enemyTurn,candidateMove,movesHistory):
+                    return (targetRow, targetCol)
 
         if piece == 'p':
             if destCol -1 >=0 and board[destRow][destCol - 1] == 'P':
-                return (targetRow, targetCol)
+                enemyTurn = TURN.WHITE 
+                candidateMove = Notation([(destRow,destCol-1),(targetRow,targetCol)])
+                if not resultsInCheck(board,enemyTurn,candidateMove,movesHistory):
+                    return (targetRow, targetCol)
             if destCol +1 <8 and board[destRow][destCol + 1] == 'P':
-                return (targetRow, targetCol)
+                enemyTurn = TURN.WHITE 
+                candidateMove = Notation([(destRow,destCol+1),(targetRow,targetCol)])
+                if not resultsInCheck(board,enemyTurn,candidateMove,movesHistory):
+                    return (targetRow, targetCol)
     return None
 
