@@ -31,6 +31,12 @@ movesHistory = []
 currentTurn = TURN.WHITE
 castlingRights = copy.deepcopy(StartingCastlingRights)
 
+
+initialGameState= makeGameStateKey(gameBoard,currentTurn,castlingRights,None)
+
+#to keep track of number of times the current state of game has been reached, (threefold htingy)
+gameStateCounts = {initialGameState: 1}
+
 instructions="""
 CHESS CLI - INSTRUCTIONS
 
@@ -67,6 +73,7 @@ try:
                 gameBoard = copy.deepcopy(StartingBoard)
                 currentTurn = TURN.WHITE
                 castlingRights = copy.deepcopy(StartingCastlingRights)
+                gameStateCounts = {initialGameState: 1}
                 continue
             elif restartFlag.lower() == 'n':
                 break
@@ -121,5 +128,27 @@ try:
             gameBoard = makeMove(gameBoard , move)
 
             movesHistory.append(move)
+
+            #checking for trifold repetition
+            enPassantTarget=getEnPassantTarget(gameBoard,movesHistory)
+            currentGameState = makeGameStateKey(gameBoard,currentTurn,castlingRights,enPassantTarget)
+            gameStateCounts[currentGameState] = gameStateCounts.get(currentGameState,0)+1
+            if gameStateCounts.get(currentGameState,0)>=3:
+                print("TriFold Repetition, the game is a draw")
+
+                restartFlag = input("Do you want to restart the game?(Y/N)")
+                if restartFlag.lower() == 'y':
+                    movesHistory = []
+                    gameBoard = copy.deepcopy(StartingBoard)
+                    currentTurn = TURN.WHITE
+                    castlingRights = copy.deepcopy(StartingCastlingRights)
+                    gameStateCounts = {initialGameState: 1}
+
+                    continue
+                elif restartFlag.lower() == 'n':
+                    break
+
+
+
 except KeyboardInterrupt:
     print("\nGame Exiting...")
