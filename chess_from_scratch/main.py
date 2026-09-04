@@ -159,9 +159,10 @@ try:
                 elif restartFlag.lower() == 'n':
                     break
             
-            #checking for 50-move draw condition 
-            if halfmoveClock >= 100:
-                print("The game is a draw\nReason:50 move Draw")
+            #checking for 50-move draw condition ,update: 50 move draw is optional , so not enforcing it as an auto draw
+            #75 auto draw
+            if halfmoveClock >= 150:
+                print("The game is a draw\nReason:75 move Draw")
 
                 restartFlag = input("Do you want to restart the game?(Y/N)")
                 if restartFlag.lower() == 'y':
