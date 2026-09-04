@@ -177,6 +177,22 @@ try:
                 elif restartFlag.lower() == 'n':
                     break
 
+            if insufficientMaterial(gameBoard):
+                print("Insufficient Material, Game Draw")
+
+                restartFlag = input("Do you want to restart the game?(Y/N)")
+                if restartFlag.lower() == 'y':
+                    halfmoveClock=0
+                    movesHistory = []
+                    gameBoard = copy.deepcopy(StartingBoard)
+                    currentTurn = TURN.WHITE
+                    castlingRights = copy.deepcopy(StartingCastlingRights)
+                    gameStateCounts = {initialGameState: 1}
+                    enPassantTarget = None
+                    continue
+                elif restartFlag.lower() == 'n':
+                    break
+
 
 
 

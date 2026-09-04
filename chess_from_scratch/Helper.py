@@ -89,3 +89,89 @@ def moveClockReset(board,move,enPassantTarget):
     
     return False
 
+def isInsufficient(g1,g2):
+    #king vs king
+    if (
+        g1["k"]==1 and g2["k"]==1 
+        and len(g1["b"])+g1["n"]+g1["o"]==0
+        and len(g2["b"])+g2["n"]+g2["o"]==0
+            ):
+        return True
+
+    #king + bishop vs king
+    if (
+        g1["k"]==1 and g2["k"]==1 
+        and len(g1["b"])==1 
+        and g1["n"]+g1["o"]==0 
+        and len(g2["b"])+g2["n"]+g2["o"]==0
+            ):
+        return True
+
+    #king + knight vs king
+    if (
+        g1["k"]==1 and g2["k"]==1 
+        and g1["n"]==1 
+        and len(g1["b"])+g1["o"]==0 
+        and len(g2["b"])+g2["n"]+g2["o"]==0
+            ):
+        return True
+
+    #king + bishop vs king + bishop with bishop on same color square
+    if (
+        g1["k"]==1 and g2["k"]==1 
+        and len(g1["b"])==1 
+        and len(g2["b"])==1 
+        and g1["o"]+g1["n"]==0 
+        and g2["o"]+g2["n"]==0 
+        and (g1["b"][0][0] + g1["b"][0][1]) % 2 == (g2["b"][0][0] + g2["b"][0][1]) % 2
+            ):
+        return True
+
+    return False
+
+
+def insufficientMaterial(board):
+    g1={
+            "k":0,
+            "b":[],
+            "n":0,
+            "o":0
+            }
+
+    g2={
+            "k":0,
+            "b":[],
+            "n":0,
+            "o":0
+            }
+    for rowno,row in enumerate(board):
+        for colno,square in enumerate(row):
+            if square == '.':
+                pass
+
+            elif square.isupper():
+                #white
+                if square=="B":
+                    g1["b"].append((colno,rowno))
+                elif square=="N":
+                    g1["n"]+=1
+                elif square=='K':
+                    g1["k"]+=1
+                else:
+                    g1["o"]+=1
+
+            elif square.islower():
+                #black
+                if square=="b":
+                    g2["b"].append((colno,rowno))
+                elif square=="n":
+                    g2["n"]+=1
+                elif square=='k':
+                    g2["k"]+=1
+                else:
+                    g2["o"]+=1
+
+    if isInsufficient(g1,g2) or isInsufficient(g2,g1):
+        return True
+    else:
+        return False
