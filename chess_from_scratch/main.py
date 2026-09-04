@@ -26,6 +26,8 @@ StartingCastlingRights = {
     "black-queenside":True
 }
 
+enPassantTarget=None
+halfmoveClock = 0
 gameBoard = copy.deepcopy(StartingBoard)
 movesHistory = []
 currentTurn = TURN.WHITE
@@ -69,11 +71,13 @@ try:
 
             restartFlag = input("Do you want to restart the game?(Y/N)")
             if restartFlag.lower() == 'y':
+                halfmoveClock=0
                 movesHistory = []
                 gameBoard = copy.deepcopy(StartingBoard)
                 currentTurn = TURN.WHITE
                 castlingRights = copy.deepcopy(StartingCastlingRights)
                 gameStateCounts = {initialGameState: 1}
+                enPassantTarget=None
                 continue
             elif restartFlag.lower() == 'n':
                 break
@@ -125,6 +129,12 @@ try:
 
                 currentTurn=TURN.BLACK
 
+            if moveClockReset(gameBoard, move,enPassantTarget):
+                halfmoveClock=0
+            else:
+                halfmoveClock+=1
+
+
             gameBoard = makeMove(gameBoard , move)
 
             movesHistory.append(move)
@@ -138,15 +148,34 @@ try:
 
                 restartFlag = input("Do you want to restart the game?(Y/N)")
                 if restartFlag.lower() == 'y':
+                    halfmoveClock=0
                     movesHistory = []
                     gameBoard = copy.deepcopy(StartingBoard)
                     currentTurn = TURN.WHITE
                     castlingRights = copy.deepcopy(StartingCastlingRights)
                     gameStateCounts = {initialGameState: 1}
-
+                    enPassantTarget=None
                     continue
                 elif restartFlag.lower() == 'n':
                     break
+            
+            #checking for 50-move draw condition 
+            if halfmoveClock >= 100:
+                print("The game is a draw\nReason:50 move Draw")
+
+                restartFlag = input("Do you want to restart the game?(Y/N)")
+                if restartFlag.lower() == 'y':
+                    halfmoveClock=0
+                    movesHistory = []
+                    gameBoard = copy.deepcopy(StartingBoard)
+                    currentTurn = TURN.WHITE
+                    castlingRights = copy.deepcopy(StartingCastlingRights)
+                    gameStateCounts = {initialGameState: 1}
+                    enPassantTarget=None
+                    continue
+                elif restartFlag.lower() == 'n':
+                    break
+
 
 
 

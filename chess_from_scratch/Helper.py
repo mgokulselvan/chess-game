@@ -70,3 +70,22 @@ def getEnPassantTarget(board, movesHistory):
                     return (targetRow, targetCol)
     return None
 
+def moveClockReset(board,move,enPassantTarget):
+    move = moves(move)
+    srcRow, srcCol = move[0]
+    destRow, destCol = move[1]
+
+    srcPiece = board[srcRow][srcCol]
+    destPiece = board[destRow][destCol]
+
+    if srcPiece.lower() == 'p':
+        return True
+    
+    if destPiece != '.':
+        return True
+
+    if enPassantTarget is not None and move[1] == enPassantTarget:#redundant because en passant only works if source piece is a pawn, which is already checked ,but its also harmless
+        return True
+    
+    return False
+
