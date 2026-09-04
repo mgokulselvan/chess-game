@@ -1,7 +1,5 @@
 from enum import Enum
 from Notations import *
-from resultsInCheck import *
-from makeMove import *
 
 #CUSTOM ERROR
 class InvalidMoveError(Exception):
@@ -32,7 +30,8 @@ def makeGameStateKey(gameBoard, currentTurn, castlingRights, enPassantTarget):
                   str(castlingRights["black-queenside"])
     return (boardKey, currentTurn.value, castlingKey, enPassantTarget)
 
-
+#to not have cyclic import
+from resultsInCheck import *
 def getEnPassantTarget(board, movesHistory):
     if not movesHistory:
         return None
