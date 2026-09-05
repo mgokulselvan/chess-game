@@ -16,6 +16,12 @@ StartingBoard = [
     ]    #0     1     2     3     4     5     6     7
          #a     b     c     d     e     f     g     h
 
+boxlen = 80
+
+#for overlaying on the piece that the player clicks on
+overlay = pygame.Surface((boxlen, boxlen), pygame.SRCALPHA)
+overlay.fill((255, 165, 0, 150))
+
 def getBoardPos(coords):
     (x , y) = coords
     rowNo = x//80
@@ -29,6 +35,27 @@ def boardPosToMove(firstPos,secPos):
     move+=(indexToAlphaMap[firstPos[0]]+indexToNumMap[firstPos[1]]+indexToAlphaMap[secPos[0]]+indexToNumMap[secPos[1]])
     return move
 
+def drawBoard(screen,board):
+    #Drawing the board with 8x8 boxes
+    for rowno,row in enumerate(board): #rowno is y , and colno is x
+        for colno,box in enumerate(row):
+            color = lightsqcol if (rowno+colno)%2==0 else darksqcol
+            pygame.draw.rect(screen, color, pygame.Rect(colno*boxlen, rowno*boxlen, boxlen, boxlen))
+
+            # if there is a piece on that box
+            if box !='.':
+                piece=''
+
+                if box.isupper():
+                    piece=piece+'w'
+                elif box.islower():
+                    piece=piece+'b'
+
+                piece=piece+box.lower()
+                screen.blit(p[piece], (colno * boxlen+5, rowno * boxlen+5))
+
+
+
 
 def startGUI():
 
@@ -36,11 +63,7 @@ def startGUI():
     screen = pygame.display.set_mode((640,640))
     clock = pygame.time.Clock()
     running = True
-    boxlen = 80
 
-    #for overlaying on the piece that the player clicks on
-    overlay = pygame.Surface((boxlen, boxlen), pygame.SRCALPHA)
-    overlay.fill((255, 165, 0, 150))
 
     piecePos=(0,0)
     firstClickDone=False
@@ -65,33 +88,15 @@ def startGUI():
                     move = boardPosToMove(piecePos,destPos)
                     gameBoard = makeMove(gameBoard , move)
 
-
-
+        #-----------------------drawing----------------------------
         screen.fill(bgcol)
-
-        #Drawing the board with 8x8 boxes
-        for rowno,row in enumerate(gameBoard): #rowno is y , and colno is x
-            for colno,box in enumerate(row):
-                color = lightsqcol if (rowno+colno)%2==0 else darksqcol
-                pygame.draw.rect(screen, color, pygame.Rect(colno*boxlen, rowno*boxlen, boxlen, boxlen))
-
-                # if there is a piece on that box
-                if box !='.':
-                    piece=''
-
-                    if box.isupper():
-                        piece=piece+'w'
-                    elif box.islower():
-                        piece=piece+'b'
-
-                    piece=piece+box.lower()
-                    screen.blit(p[piece], (colno * boxlen+5, rowno * boxlen+5))
-
+        drawBoard(screen,gameBoard)
         #highlighting the piece that the mouse clicks
         if firstClickDone:
             screen.blit(overlay,(piecePos[0] * boxlen, piecePos[1] * boxlen))
-
         pygame.display.flip()#to put all the drawings from above on the screen
+        #----------------------end of drawing-----------------------
+
 
         dt = clock.tick(60)/1000#Limit FPS to 60
 
