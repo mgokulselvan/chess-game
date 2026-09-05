@@ -1,5 +1,5 @@
 from cli import gameStart
-from gui import startGUI
+from gui.gui import startGUI
 
 if(input("Enter C to start the game in CLI:")=='C'):
     gameStart()

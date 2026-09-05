@@ -1,4 +1,5 @@
 import pygame
+from theme import *
 def startGUI():
 
     pygame.init()
@@ -23,15 +24,10 @@ def startGUI():
                 ['R' , 'N' , 'B' , 'Q' , 'K' , 'B' , 'N' , 'R'] #7 #1
             ]
 
-        bgcol = "#4b4847"
         screen.fill(bgcol)
 
         #Drawing the board with 8x8 boxes
         boxlen = 80
-        darksqcol = "#769656"
-        lightsqcol = "#eeeed2"
-        black = "#000000" 
-        white= "#FFFFFF" 
 
 
         for rowno,row in enumerate(gameBoard): #rowno is y , and colno is x
@@ -42,9 +38,9 @@ def startGUI():
                 # if there is a piece on that box
                 if box !='.':
                     if box.isupper():
-                        pygame.draw.rect(screen, white, pygame.Rect(colno*boxlen, rowno*boxlen, boxlen, boxlen))
+                        pygame.draw.rect(screen, "#FFFFFF", pygame.Rect(colno*boxlen, rowno*boxlen, boxlen, boxlen))
                     elif box.islower():
-                        pygame.draw.rect(screen, black, pygame.Rect(colno*boxlen, rowno*boxlen, boxlen, boxlen))
+                        pygame.draw.rect(screen, "#000000", pygame.Rect(colno*boxlen, rowno*boxlen, boxlen, boxlen))
 
 
         pygame.display.flip()#to put all the drawings from above on the screen
