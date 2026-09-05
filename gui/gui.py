@@ -1,4 +1,5 @@
 import pygame
+from pieces import p
 from theme import *
 def startGUI():
 
@@ -37,10 +38,15 @@ def startGUI():
 
                 # if there is a piece on that box
                 if box !='.':
+                    piece=''
+
                     if box.isupper():
-                        pygame.draw.rect(screen, "#FFFFFF", pygame.Rect(colno*boxlen, rowno*boxlen, boxlen, boxlen))
+                        piece=piece+'w'
                     elif box.islower():
-                        pygame.draw.rect(screen, "#000000", pygame.Rect(colno*boxlen, rowno*boxlen, boxlen, boxlen))
+                        piece=piece+'b'
+
+                    piece=piece+box.lower()
+                    screen.blit(p[piece], (colno * 80+5, rowno * 80+5))
 
 
         pygame.display.flip()#to put all the drawings from above on the screen
