@@ -91,38 +91,99 @@ def moveClockReset(board,move,enPassantTarget):
 def isInsufficient(g1,g2):
     #king vs king
     if (
-        g1["k"]==1 and g2["k"]==1 
-        and len(g1["b"])+g1["n"]+g1["o"]==0
-        and len(g2["b"])+g2["n"]+g2["o"]==0
+        g1["k"]==1 and g2["k"]==1 #king
+        and len(g1["b"])+g1["n"]+g1["o"]==0 #no other pieces 
+        and len(g2["b"])+g2["n"]+g2["o"]==0 #no other pieces
             ):
         return True
 
     #king + bishop vs king
     if (
-        g1["k"]==1 and g2["k"]==1 
-        and len(g1["b"])==1 
+        g1["k"]==1 and g2["k"]==1 #king
+        and len(g1["b"])==1 #one group has one bishop
         and g1["n"]+g1["o"]==0 
-        and len(g2["b"])+g2["n"]+g2["o"]==0
+
+        and len(g2["b"])+g2["n"]+g2["o"]==0 #other group has no other pieces
             ):
         return True
 
     #king + knight vs king
     if (
-        g1["k"]==1 and g2["k"]==1 
-        and g1["n"]==1 
+        g1["k"]==1 and g2["k"]==1 #king
+
+        and g1["n"]==1 #one group has one knight
         and len(g1["b"])+g1["o"]==0 
-        and len(g2["b"])+g2["n"]+g2["o"]==0
+
+        and len(g2["b"])+g2["n"]+g2["o"]==0 #other group has no other pieces
             ):
         return True
 
     #king + bishop vs king + bishop with bishop on same color square
     if (
-        g1["k"]==1 and g2["k"]==1 
-        and len(g1["b"])==1 
-        and len(g2["b"])==1 
+        g1["k"]==1 and g2["k"]==1 #king
+
+        and len(g1["b"])==1 #one group only has one bishop 
         and g1["o"]+g1["n"]==0 
+
+        and len(g2["b"])==1 #another group only has one bishop
         and g2["o"]+g2["n"]==0 
+
+        #both bishops are on same colored squares
         and (g1["b"][0][0] + g1["b"][0][1]) % 2 == (g2["b"][0][0] + g2["b"][0][1]) % 2
+            ):
+        return True
+
+    #king + bishop vs king + bishop , on opposite colored squares
+    if (
+        g1["k"]==1 and g2["k"]==1 #king
+
+        and len(g1["b"])==1 #one group only has one bishop 
+        and g1["o"]+g1["n"]==0 
+
+        and len(g2["b"])==1 #another group only has one bishop
+        and g2["o"]+g2["n"]==0 
+
+        #both bishops are on opposite colored squares
+        and (g1["b"][0][0] + g1["b"][0][1]) % 2 != (g2["b"][0][0] + g2["b"][0][1]) % 2
+            ):
+        return True
+
+#on same colored and on opposite colored ,BRUH, WHY DID THE SUMMARY OF insufficient material cases go wrong
+#the color check here is unnecessary , i got to know about same colored first and implemented it, once i got to know about different colored, i just implemented it for the lolz, im lazy now, not gonna remove, if im reading this and getting mad, 
+#pls laugh it off, i put so much effort into these cases, dont have the heart to remove these functions, (lot of other places there is redundancy too like above(laugh them away too))
+
+    #king + knight vs king + knight
+    if (
+        g1["k"]==1 and g2["k"]==1 #king
+
+        and g1["n"]==1 #one group only has one knight
+        and len(g1["b"])+g1["o"]==0 
+
+        and g2["n"]==1 #another group only has one knight
+        and len(g2["b"])+g2["o"]==0
+            ):
+        return True
+
+    #king + bishop vs king + knight
+    if (
+        g1["k"]==1 and g2["k"]==1 #king
+
+        and len(g1["b"])==1 #one group only has one bishop
+        and g1["n"]+g1["o"]==0 
+
+        and g2["n"]==1 #another group only has one knight
+        and len(g2["b"])+g2["o"]==0
+            ):
+        return True
+
+    #king + 2 knights vs king
+    if (
+        g1["k"]==1 and g2["k"]==1 #king
+
+        and g1["n"]==2 #one group has 2 knights
+        and len(g1["b"])+g1["o"]==0 
+
+        and len(g2["b"])+g2["n"]+g2["o"]==0 #other group has no other pieces
             ):
         return True
 
