@@ -83,7 +83,7 @@ def moveClockReset(board,move,enPassantTarget):
     if destPiece != '.':
         return True
 
-    if enPassantTarget is not None and move[1] == enPassantTarget:#redundant because en passant only works if source piece is a pawn, which is already checked ,but its also harmless
+    if enPassantTarget is not None and move[1] == enPassantTarget and srcPiece.lower() == 'p':#redundant because en passant only works if source piece is a pawn, which is already checked ,but its also harmless
         return True
     
     return False
