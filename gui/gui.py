@@ -1,4 +1,6 @@
 import pygame
+from moves.generateAllLegalMoves import *
+from Helper import *
 from makeMove import *
 from gui.pieces import p
 from gui.theme import *
@@ -17,6 +19,13 @@ StartingBoard = [
          #a     b     c     d     e     f     g     h
 
 boxlen = 80
+
+StartingCastlingRights = {
+    "white-kingside":True,
+    "white-queenside":True,
+    "black-kingside":True,
+    "black-queenside":True
+}
 
 #for overlaying on the piece that the player clicks on
 overlay = pygame.Surface((boxlen, boxlen), pygame.SRCALPHA)
@@ -68,16 +77,26 @@ def startGUI():
     piecePos=(0,0)
     firstClickDone=False
 
+    enPassantTarget=None
+    halfmoveClock = 0
     gameBoard = copy.deepcopy(StartingBoard)
+    movesHistory = []
+    currentTurn = TURN.WHITE
+    castlingRights = copy.deepcopy(StartingCastlingRights)
+    initialGameState= makeGameStateKey(gameBoard,currentTurn,castlingRights,None)
+    gameStateCounts = {initialGameState: 1}
 
 
     #-----------------------------GAME LOOP----------------------------------
     while(running):
 
+        legalMoves = generateAllLegalMoves(gameBoard , currentTurn , movesHistory,castlingRights)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:#quitting graciously without any error on clicking "x" 
                 running = False
 
+            #MOUSE CLICK AKA MOVING A PIECE
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if not firstClickDone:
                     piecePos = getBoardPos(pygame.mouse.get_pos()) 
@@ -86,7 +105,10 @@ def startGUI():
                     firstClickDone = False
                     destPos = getBoardPos(pygame.mouse.get_pos())
                     move = boardPosToMove(piecePos,destPos)
-                    gameBoard = makeMove(gameBoard , move)
+                    if move in legalMoves:
+                        gameBoard = makeMove(gameBoard , move)
+                        currentTurn = TURN.BLACK if currentTurn == TURN.WHITE else TURN.WHITE
+                        movesHistory.append(move)
 
         #-----------------------drawing----------------------------
         screen.fill(bgcol)
